@@ -4,11 +4,11 @@
 
 TODO:
 * Install / configure:
-  * tmux
   * tmuxinator
 * set up symlinks to config files for non-chef environments
 * use data bag for user configs in recipes
 * figure out why `sudo` recipe breaks future provision runs
+* fix timezone
 
 # Requirements
 

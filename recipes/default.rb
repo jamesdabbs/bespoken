@@ -20,5 +20,6 @@ include_recipe "oh-my-zsh"
 
 package "tree"
 
+include_recipe "jdabbs::tmux"
 include_recipe "jdabbs::vim"
 
