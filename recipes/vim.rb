@@ -4,8 +4,9 @@ conf = "/etc/vim"
 
 node.set["vim_config"]["installation_dir"] = conf
 
-node.set["vim_config"]["config_file_mode"]  = :remote_file
-node.set["vim_config"]["remote_config_url"] = "https://raw.github.com/jamesdabbs/bespoken/master/vim"
+node.set["vim_config"]["config_file_mode"]     = "cookbook"
+node.set["vim_config"]["config_file_template"] = ".rc/.vimrc"
+node.set["vim_config"]["config_file_cookbook"] = "jdabbs"
 
 node.set["vim_config"]["bundles"]["git"] = [
   "https://github.com/mileszs/ack.vim.git",
