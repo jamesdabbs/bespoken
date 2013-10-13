@@ -2,5 +2,5 @@
 # vi: set ft=ruby :
 
 require "~/chef/box"
-Box.new "base", recipes: "jdabbs"
+Box.new "medlink", recipes: "jdabbs"
 
