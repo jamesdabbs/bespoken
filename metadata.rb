@@ -8,7 +8,6 @@ version          '0.1.0'
 
 depends "users"
 depends "oh-my-zsh"
-depends "sudo"
 depends "tmux"
 depends "vim"
 depends "vim_config"

@@ -1,11 +1,7 @@
 include_recipe "users"
-users_manage "james"
+users_manage "sudo" # Creates from users/ data bag all users in the sudo group
 
 james = data_bag_item "users", "james"
-
-# TODO: figure out why this seems to break future provisioning runs
-# node.set['authorization']['sudo']['users'] = james["id"]
-# include_recipe "sudo"
 
 # Set the timezone
 tz = "US/Eastern"

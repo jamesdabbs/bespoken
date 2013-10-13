@@ -15,13 +15,17 @@ but should look something like:
 
 ```
 {
-  "id":         ... ,
+  "id":         "james" ,
   "password":   ... ,
-  "shell":      ... ,
-  "groups":   [ ... ],
-  "ssh_keys": [ ... ]
+  "shell":      "\/bin\/zsh ,
+  "groups":    ["sudo", "rbenv"],
+  "ssh_keys":  [ ... ]
 }
 ```
+
+Use `openssl passwd ...` to generate the password hash, as detailed here: https://github.com/opscode-cookbooks/users.
+
+It is important that the user be in the "sudo" group - both to have sudo access, and because members of this group are automatically created from entries in the users data bag.
 
 # Usage
 
