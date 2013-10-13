@@ -12,4 +12,5 @@ depends "sudo"
 depends "tmux"
 depends "vim"
 depends "vim_config"
+depends "rbenv"
 

@@ -3,12 +3,10 @@
 ... a work in progress.
 
 TODO:
-* Install / configure:
-  * tmuxinator
-* set up symlinks to config files for non-chef environments
-* use data bag for user configs in recipes
-* figure out why `sudo` recipe breaks future provision runs
-* fix timezone
+* replace old config file repo w/ symlinks to config templates
+* figure out how best to track
+  * tmuxinator config files
+  * common utility scripts
 
 # Requirements
 
