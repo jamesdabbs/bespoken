@@ -1,0 +1,31 @@
+# ~/.tmuxinator/pi-base.yml
+
+name: pi-base
+root: ~/src/pi-base
+
+# Optional tmux socket
+# socket_name: foo
+
+# Runs before everything. Use it to start daemons etc.
+# pre: sudo /etc/rc.d/mysqld start
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+# tmux_options: -f ~/.tmux.mac.conf
+
+windows:
+  - vim: vim
+  - console:
+      layout: main-vertical
+      panes:
+        - 
+        - bundle exec rails c
+  - logs:
+      layout: main-vertical
+      panes:
+        - tail -f log/development.log
+        - QUEUE=* bundle exec rake resque:work
+        - elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
+

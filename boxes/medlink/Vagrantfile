@@ -2,5 +2,14 @@
 # vi: set ft=ruby :
 
 require "~/chef/box"
-Box.new "medlink", recipes: "jdabbs"
+Box.new "medlink",
+  recipes: "jdabbs",
+  json: {
+    projects: {
+      medlink: {
+        user:       "james",
+        repository: "git://github.com/atlrug-rhok/medlink.git"
+      }
+    }
+  }
 

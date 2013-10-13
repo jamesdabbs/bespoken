@@ -1,0 +1,9 @@
+#!/bin/bash
+
+stats=`pmset -g batt | grep remaining | cut -f2`
+
+percent=`echo $stats | cut -d\; -f1`
+time=`echo $stats | cut -d\; -f3 | cut -d' ' -f2`
+
+echo "$percent ($time)"
+

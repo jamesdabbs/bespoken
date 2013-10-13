@@ -1,0 +1,34 @@
+# ~/.tmuxinator/medlink.yml
+
+name: medlink
+root: ~/src/medlink
+
+# Optional tmux socket
+# socket_name: foo
+
+# Runs before everything. Use it to start daemons etc.
+# pre: sudo /etc/rc.d/mysqld start
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+# tmux_options: -f ~/.tmux.mac.conf
+
+windows:
+  - ed:
+      layout: 2f4a,204x50,0,0{93x50,0,0,1,110x50,94,0,3}
+      panes:
+        - vim
+        - vim
+  - console:
+      layout: 2f4a,204x50,0,0{93x50,0,0,1,110x50,94,0,3}
+      panes:
+        -
+        -
+  - rails:
+      layout: 2f4a,204x50,0,0{93x50,0,0,1,110x50,94,0,3}
+      panes:
+        - bundle exec rails c
+        - bundle exec rails s
+

@@ -7,7 +7,7 @@ james = data_bag_item "users", "james"
 tz = "US/Eastern"
 execute "set timezone" do
   command %{ echo "#{tz}" | sudo tee /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata }
-  not_if { File.read("/etc/timezone").strip == tz }
+  not_if { File.read("/etc/timezone") =~ /#{tz}/ }
 end
 
 # Copy over the various home config files
@@ -23,15 +23,24 @@ home = james["home"] || "/home/james"
   end
 end
 
-# TODO: update to include
-# - Personalized theme (?)
-# - Extra plugins
-# - Source .zsh_aliases and .zshrc.local
-#   - Extract other .zshrc changes into .zshrc.local
+# TODO: update plugins, theme (?)
 include_recipe "oh-my-zsh"
+unless ::File.read("#{home}/.zshrc") =~ /\.zshrc\.local/
+  ::File.open "#{home}/.zshrc", 'a' do |f|
+    f.puts <<-EOS
+      # Add global rbenv paths
+      export PATH=/opt/rbenv/shims:/opt/rbenv/bin:$PATH
+
+      # Add local zshrc
+      source $HOME/.zshrc.local
+    EOS
+  end
+end
 
 package "tree"
 
 include_recipe "jdabbs::tmux"
 include_recipe "jdabbs::vim"
+
+include_recipe "jdabbs::projects"
 

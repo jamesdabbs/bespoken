@@ -2,12 +2,6 @@
 
 ... a work in progress.
 
-TODO:
-* replace old config file repo w/ symlinks to config templates
-* figure out how best to track
-  * tmuxinator config files
-  * common utility scripts
-
 # Requirements
 
 The `users` setup looks for users in data bags. Those are not checked in (for security's sake)

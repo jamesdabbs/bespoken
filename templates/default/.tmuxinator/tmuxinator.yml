@@ -1,0 +1,22 @@
+# ~/.tmuxinator/todo.yml
+
+name: todo
+root: ~/todo
+
+windows:
+  - home:
+      layout: 5bab,204x50,0,0{90x50,0,0,0,113x50,91,0[113x24,91,0,2,113x25,91,25,3]}
+      panes:
+        - vi general
+        - 
+        - 
+  - work: 
+      pre: cd work && clear
+      layout: c151,204x50,0,0{71x50,0,0,1,132x50,72,0[132x16,72,0,4,132x16,72,17,5,132x16,72,34,6]}
+      panes:
+        - vi general
+        - vi scout
+        - vi patterns
+        - vi engine
+  - console:
+
