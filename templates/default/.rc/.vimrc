@@ -62,14 +62,14 @@ nnoremap <c-e> 5<c-e>
 nnoremap <c-y> 5<c-y>
 
 " Window navigation
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-inoremap <c-j> <esc><c-w>j
-inoremap <c-k> <esc><c-w>k
-inoremap <c-h> <esc><c-w>h
-inoremap <c-l> <esc><c-w>l
+nnoremap <leader>j <c-w>j
+nnoremap <leader>k <c-w>k
+nnoremap <leader>h <c-w>h
+nnoremap <leader>l <c-w>l
+inoremap <leader>j <esc><c-w>j
+inoremap <leader>k <esc><c-w>k
+inoremap <leader>h <esc><c-w>h
+inoremap <leader>l <esc><c-w>l
 
 " Overtone helpers
 map <leader>x :Eval<cr>
