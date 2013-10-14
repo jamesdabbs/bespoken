@@ -16,8 +16,8 @@ node.set["rbenv"]["user_installs"] = [
   }
 ]
 
-# ruby build seems to need this, but defaults to install a non-findable version
-package "libxml2-dev"
+# Ruby build was failing to find an appropriate libxml2-dev without this
+execute "sudo apt-get update -y"
 
 include_recipe "ruby_build"
 include_recipe "rbenv::user"

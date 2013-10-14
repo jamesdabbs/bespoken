@@ -1,6 +1,8 @@
 u = user "james"
 
-node.projects.each do |name, conf|
+projects = node["projects"] || []
+
+projects.each do |name, conf|
 
   # Clone the project, creating a directory for it if needed
   path = conf["path"] || "src/#{name}"

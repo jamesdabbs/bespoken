@@ -10,7 +10,9 @@ execute "set timezone" do
   not_if { File.read("/etc/timezone") =~ /#{tz}/ }
 end
 
-# Copy over the various home config files
+include_recipe "oh-my-zsh"
+
+# Copy over the various home config files, including .zshrc
 ::Dir.foreach File.expand_path("../../templates/default/.rc/", __FILE__) do |f|
   next if f =~ /^\.+$/
 
@@ -19,20 +21,6 @@ end
     owner  u.name
     group  u.name
     mode   0644
-  end
-end
-
-# TODO: update plugins, theme (?)
-include_recipe "oh-my-zsh"
-unless true # ::File.read("#{home}/.zshrc") =~ /\.zshrc\.local/
-  ::File.open "#{u.home}/.zshrc", 'a' do |f|
-    f.puts <<-EOS
-      # Add global rbenv paths
-      export PATH=/opt/rbenv/shims:/opt/rbenv/bin:$PATH
-
-      # Add local zshrc
-      source $HOME/.zshrc.local
-    EOS
   end
 end
 
