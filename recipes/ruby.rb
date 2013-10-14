@@ -1,15 +1,24 @@
 u = user "james"
 
+edge = "2.0.0-p247"
+
 node.set["rbenv"]["user_installs"] = [
   {
     "user"   => u.name,
-    "rubies" => ["2.0.0-p247"],
-    "global" =>  "2.0.0-p247",
-    "gems"   => [
-      { "name" => "bundler"    },
-      { "name" => "tmuxinator" }
-    ]
+    "rubies" => [edge],
+    "global" => edge,
+    "gems"   => {
+      edge => [
+        { "name" => "bundler"    },
+        { "name" => "tmuxinator" }
+      ]
+    }
   }
 ]
-include_recipe "rbenv::user_install"
+
+# ruby build seems to need this, but defaults to install a non-findable version
+package "libxml2-dev"
+
+include_recipe "ruby_build"
+include_recipe "rbenv::user"
 
