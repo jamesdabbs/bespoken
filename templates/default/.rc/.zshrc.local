@@ -2,5 +2,6 @@
 source $HOME/.zsh_aliases
 
 export OPT=0
+export WARN_ERRORS=-Werror
 export EDITOR=vim
 
