@@ -8,6 +8,7 @@
 --type-set=ch=.c,.h
 --ignore-dir=vendor
 --ignore-dir=log
+--ignore-dir=logs
 --ignore-dir=tmp
 --ignore-dir=doc
 --ignore-dir=coverage
