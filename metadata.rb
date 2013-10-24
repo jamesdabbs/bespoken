@@ -6,11 +6,16 @@ description      'Installs/Configures jdabbs'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.1.0'
 
-depends "users"
-depends "oh-my-zsh"
-depends "tmux"
-depends "vim"
-depends "vim_config"
-depends "rbenv"
-depends "ruby_build"
+%w{
+  users
+  oh-my-zsh
+  tmux
+  vim
+  vim_config
+  rbenv
+  ruby_build
+  samba
+  openssh
+  transmission
+}.each { |nc| depends nc }
 

@@ -1,5 +1,7 @@
 u = user "james"
 
+include_recipe "jdabbs::tmuxinator"
+
 projects = node["projects"] || []
 
 projects.each do |name, conf|

@@ -1,0 +1,42 @@
+{
+  "id":     "shares",
+  "shares": {
+    "downloads": {
+      "comment":    "Downloads",
+      "path":       "/media/downloads",
+      "guest ok":   "yes",
+      "printable":  "yes",
+      "write list": ["james"],
+      "create mask": "0644",
+      "directory mask": "0755"
+    },
+    "music": {
+      "comment":    "Music",
+      "path":       "/media/music",
+      "guest ok":   "yes",
+      "printable":  "yes",
+      "write list": ["james"],
+      "create mask": "0644",
+      "directory mask": "0755"
+    },
+    "movies": {
+      "comment":    "Movies",
+      "path":       "/storage/Movies",
+      "guest ok":   "yes",
+      "printable":  "yes",
+      "write list": ["james"],
+      "create mask": "0644",
+      "directory mask": "0755"
+    },
+    "tv": {
+      "comment":    "TV",
+      "path":       "/storage/TV",
+      "guest ok":   "yes",
+      "printable":  "yes",
+      "write list": ["james"],
+      "create mask": "0644",
+      "directory mask": "0755"
+    }
+  }
+}
+

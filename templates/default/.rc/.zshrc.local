@@ -1,6 +1,8 @@
 
 source $HOME/.zsh_aliases
 
+export PATH=$HOME/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH
+
 export OPT=0
 export WARN_ERRORS=-Werror
 export EDITOR=vim

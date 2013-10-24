@@ -12,10 +12,8 @@ end
 
 include_recipe "oh-my-zsh"
 
-# Copy over the various home config files, including .zshrc
-::Dir.foreach File.expand_path("../../templates/default/.rc/", __FILE__) do |f|
-  next if f =~ /^\.+$/
-
+%w{ .ackrc .gemrc .gitconfig .gitignore_global .rspec .tmux.conf .vimrc
+    .zsh_aliases .zshrc .zshrc.local jdabbs.zsh-theme }.each do |f|
   template "#{u.home}/#{f}" do
     source ".rc/#{f}"
     owner  u.name
@@ -28,6 +26,4 @@ package "tree"
 
 include_recipe "jdabbs::tmux"
 include_recipe "jdabbs::vim"
-
-include_recipe "jdabbs::projects"
 

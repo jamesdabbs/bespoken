@@ -1,0 +1,9 @@
+{
+  "id":       "james",
+  "password": "...",
+  "shell":    "\/bin\/zsh",
+  "groups":   ["sudo", "rbenv"],
+  "ssh_keys": ["..."],
+  "smbpassword":           "...",
+  "transmission_password": "..."
+}

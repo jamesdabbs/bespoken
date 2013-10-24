@@ -25,7 +25,7 @@ set wildmenu
 set wildmode=list:longest
 
 " CtrlP .ignore
-set wildignore+=*/node_modules/*,*.so,*.o
+set wildignore+=*/cabal-dev/*,*/node_modules/*,*.so,*.o
 
 " Use 256 color schemes
 set t_Co=256

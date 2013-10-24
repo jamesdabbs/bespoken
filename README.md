@@ -10,16 +10,13 @@ but should look something like:
 ```
 {
   "id":         "james" ,
-  "password":   ... ,
-  "shell":      "\/bin\/zsh ,
-  "groups":    ["sudo", "rbenv"],
-  "ssh_keys":  [ ... ]
+  "password":   <password hashed with `openssl passwd`>, # See: https://github.com/opscode-cookbooks/users.
+  "shell":      "\/bin\/zsh" ,
+  "groups":    ["sudo", ...], # Needed both for sudo access, and for the default recipe to create this user
+  "ssh_keys":  [ ... ],
+  "smbpasswd":  <plain text password>
 }
 ```
-
-Use `openssl passwd ...` to generate the password hash, as detailed here: https://github.com/opscode-cookbooks/users.
-
-It is important that the user be in the "sudo" group - both to have sudo access, and because members of this group are automatically created from entries in the users data bag.
 
 # Usage
 
