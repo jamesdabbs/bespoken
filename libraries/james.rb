@@ -6,6 +6,12 @@ class Chef::Recipe
     _db["home"] ||= "/home/#{name}"
     OpenStruct.new _db
   end
+
+  def defaults *args
+    conf = args.pop
+    n = args.reduce(node.default) { |mem,path| mem[path] }
+    conf.each { |k,v| n[k] = v }
+  end
 end
 
 

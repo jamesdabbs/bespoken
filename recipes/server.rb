@@ -1,29 +1,37 @@
 # This recipe sets up a home media server, though there are still a few manual steps required:
 #
 # BOOT UP THE SERVER
-# Duh
+# Duh. You may want to go ahead and set up the hostname and a static ip (and make
+# sure the router is set up to forward ports appropriately).
 #
 # CREATE THE MEDIA AND STORAGE DIRECTORIES
 # In the current iteration, /home is mounted on a different partition and /data is
-# symlinked into there; /storage is symlinked to /media/Wind.
+# symlinked into there; /storage is symlinked to an external drive.
 MEDIA   = "/data"
 STORAGE = "/storage"
 
-# VERIFY YOU HAVE A FLEXGET CONFIG TEMPLATE
-# There is a sample template in the repo, but the actual one is likely to contain
-# passkeys or other sensitive data (TODO: encrypted data bag this)
-#
+STORAGE_UUID = {
+  toshiba_3tb: "6ED2E7F9D2E7C405",
+}.fetch :toshiba_3tb
+
 # GET CHEF RUNNING
 # Again, duh. But since you do this infrequently enough, remember to make sure the
 # chef gem is up to date, upload all the cookbooks (`berks upload`) and data bags
 # (`\knife data bag from file <bag> <item>`) and do something like
 #
-#    knife bootstrap <address> --ssh-user ... --ssh-password ... \
+#    \knife bootstrap <address> --ssh-user ... --ssh-password \
 #        --run-list "recipe[jdabbs::server]" --sudo
 #
-# CHECK ON FLEXGET
-# It gets a little overzealous downloading Radiolab's back catalog sometimes ...
-
+# The \knife signifies to use the local knife version, since system knife may be old
+# (likely the problem if you see missing constant errors in weird places).
+#
+# You'll need to already have ssh running on the target box (`apt-get openssh-server`),
+# but this will overwrite the existing settings.
+#
+# CHECK ON THE WATCH DIR
+# Optional, but the transmission watch dir is disabled by default so that it doesn't
+# download the whole internets the first time that flexget runs. You probably want to
+# manually run flexget once and then add `flexget_checked` to the node's attributes.
 
 include_recipe "jdabbs::default"
 u = user "james"
@@ -35,6 +43,7 @@ include_recipe "users"
 users_manage "media"
 
 # This is largely intended to be sure that STORAGE exists
+# FIXME: allow node json option to create these (e.g. for Vagrant testing)
 directory "#{STORAGE}/mirrors" do
   user  "mirror"
   group "media"
@@ -59,86 +68,67 @@ end
   end
 end
 
+execute 'sudo apt-get update -y'
+
+# TODO: the remainder should probably be extracted to a role since it's
+#       just setting attributes and running recipes.
 
 # -- Samba shares (from data bag) -- #
-
-execute 'sudo apt-get update -y'
+# FIXME:
+# - network settings
+# - static IP
+# - security share?
+# - figure out user permissions and writability
+# fstab for storage
+defaults "samba",
+  "workgroup"   => "WORKGROUP",
+  "security"    => "share",
+  "interfaces"  => "lo wlan0",
+  "hosts allow" => "10.0.0.0/8"
 include_recipe "samba::server"
-
 
 # -- SSH -- #
 # TODO: Customize motd
-include_recipe "openssh"
-{
+defaults "openssh", "server",
   "permit_root_login"       => "no",
   "password_authentication" => "no",
   "allow_users"             => "james@10.0.0.* remote vagrant"
-}.each { |k,v| node.default["openssh"]["server"][k] = v }
-
+include_recipe "openssh"
 
 # -- Transmission -- #
-
-include_recipe "transmission"
-
-directory "#{MEDIA}/downloads/.watch" do
-  user  "james"
-  group "media"
-  mode  0755
-end
-
-{
-  "download_dir"           => "#{MEDIA}/downloads",
-  "incomplete_dir_enabled" => true,
-  "watch_dir"              => "#{MEDIA}/downloads/.watch",
-  "watch_dir_enabled"      => true,
-  "rpc_username"           => "james",
-  "rpc_password"           => u.transmission_password
-}.each { |k,v| node.default["transmission"][k] = v }
+defaults "transmission", "settings",
+  "download-dir"           => "#{MEDIA}/downloads",
+  "incomplete-dir-enabled" => true,
+  "watch-dir"              => "#{MEDIA}/downloads/.watch",
+  "watch-dir-enabled"      => node[:flexget_checked]||false,
+  "rpc-username"           => "james",
+  "rpc-password"           => u.transmission_password,
+  "rpc-whitelist"          => "127.0.0.1,10.0.*.*"
+include_recipe "jdabbs::transmission"
 
 # -- Flexget -- #
-# Adapted from: https://github.com/chef-developers/chef-flexget
+defaults "flexget",
+  "user"  => "james",
+  "feeds" => u.feeds
+include_recipe "jdabbs::flexget"
 
-include_recipe "python"
-
-%w{ flexget transmissionrpc }.each do |package|
-  python_pip(package) { action :install }
-end
-
-directory "#{u.home}/.flexget" do
-  user  "james"
-  group "james"
-  mode  0755
-end
-
-u.feeds["tasks"].each do |name, conf|
-  if dir = conf["download"]
-    directory dir do
-      user  "james"
-      group "james"
-      mode  0755
-    end
-  end
-end
-
-file "#{u.home}/.flexget/config.yml" do
-  user    "james"
-  group   "james"
-  content u.feeds.to_yaml
-end
-
-# TODO: verify that this is okay, and then add it
-# cron "flexget" do
-#   hour    "*/15"
-#   user    "james"
-#   command "/usr/local/bin/flexget --cron"
-# end
-
-# -- Mirrors -- #
+# -- Data flow -- #
 # TODO: script to sync downloads, music, podcasts -> storage
 # TODO: tagging tools
+# TODO: music import and pull scripts
 # TODO: start transmission on boot
 
 # -- Mail -- #
 # TODO: set up on remote logins, mirror / flexget failures
 package "mailutils"
+
+# -- File server -- #
+# TODO: make a simple app (flask? we've already got python ...) to
+# - allow browsing and file serving over HTTP/:80
+# - run as a read-only user
+# - basic auth from data bag
+# - filter downloads dir
+
+# -- Plex / roku -- #
+# TODO: everything
 

@@ -1,41 +1,45 @@
 {
   "id":     "shares",
   "shares": {
-    "downloads": {
-      "comment":    "Downloads",
-      "path":       "/media/downloads",
-      "guest ok":   "yes",
-      "printable":  "yes",
-      "write list": ["james"],
-      "create mask": "0644",
-      "directory mask": "0755"
+    "Downloads": {
+      "comment":       "Downloads",
+      "path":          "/media/downloads",
+      "guest ok":      "yes",
+      "guest account": "remote",
+      "browseable":    "yes",
+      "write list":    ["james"]
     },
-    "music": {
-      "comment":    "Music",
-      "path":       "/media/music",
-      "guest ok":   "yes",
-      "printable":  "yes",
-      "write list": ["james"],
-      "create mask": "0644",
-      "directory mask": "0755"
+    "Music": {
+      "comment":       "Music",
+      "path":          "/media/music",
+      "guest ok":      "yes",
+      "guest account": "remote",
+      "browseable":    "yes",
+      "write list":    ["james"]
     },
-    "movies": {
-      "comment":    "Movies",
-      "path":       "/storage/Movies",
-      "guest ok":   "yes",
-      "printable":  "yes",
-      "write list": ["james"],
-      "create mask": "0644",
-      "directory mask": "0755"
+    "Movies": {
+      "comment":       "Movies",
+      "path":          "/storage/Movies",
+      "guest ok":      "yes",
+      "guest account": "remote",
+      "browseable":    "yes",
+      "write list":    ["james"]
     },
-    "tv": {
-      "comment":    "TV",
-      "path":       "/storage/TV",
-      "guest ok":   "yes",
-      "printable":  "yes",
-      "write list": ["james"],
-      "create mask": "0644",
-      "directory mask": "0755"
+    "TV": {
+      "comment":       "TV",
+      "path":          "/storage/TV",
+      "guest ok":      "yes",
+      "guest account": "remote",
+      "browseable":    "yes",
+      "write list":    ["james"]
+    },
+    "Storage": {
+      "comment":       "All Storage",
+      "path":          "/storage",
+      "guest ok":      "yes",
+      "guest account": "remote",
+      "browseable":    "yes",
+      "write list":    ["james"]
     }
   }
 }

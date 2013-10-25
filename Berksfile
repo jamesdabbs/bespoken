@@ -15,5 +15,4 @@ cookbook 'vim_config', git: 'https://github.com/promisedlandt/cookbook-vim_confi
 cookbook 'tmux'
 cookbook 'rbenv', git: 'https://github.com/fnichol/chef-rbenv.git'
 cookbook 'ruby_build'
-cookbook 'transmission'
 
