@@ -84,15 +84,15 @@ end
   end
 end
 
+template "/home/remote/.ssh/rc" do
+  source "remote-ssh.rc"
+  mode   0640
+end
 
 # TODO: the sections that recipe + node config should probably be
 #       extracted to a role.
 
 # -- Mirrors -- #
-# TODO:
-# - Add recipe and sync script using rsync
-# - Set up cron job
-# - Make sure mail goes to the right user
 defaults "mirror",
   "to"          => "#{STORAGE}/mirrors/server",
   "directories" => %w{ music podcasts downloads }.map { |dir| "#{MEDIA}/#{dir}" },
@@ -115,9 +115,6 @@ defaults "samba",
 include_recipe "samba::server"
 
 # -- SSH -- #
-# TODO:
-# - Customize motd
-# - Add mail line in remote user's .ssh/rc
 defaults "openssh", "server",
   "permit_root_login"       => "no",
   "password_authentication" => "no",

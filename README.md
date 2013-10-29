@@ -18,6 +18,16 @@ but should look something like:
 }
 ```
 
+Server setup also expects a remote user:
+
+```
+{
+  "id":       "remote",
+  "groups":   ["media"],
+  "ssh_keys": [ ... ]
+}
+```
+
 # Usage
 
 Some useful commands:

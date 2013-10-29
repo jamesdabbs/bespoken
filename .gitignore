@@ -8,5 +8,6 @@ bin
 
 # Sensitive information
 data_bags/users/james.json
+data_bags/users/remote.json
 templates/default/flexget.config.yml
 
