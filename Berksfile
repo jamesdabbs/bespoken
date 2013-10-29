@@ -6,8 +6,8 @@ metadata
 cookbook 'chef-solo-search'
 
 # Hard lock cookbooks not to require Chef 11 features
-cookbook 'apt', '~> 1.10.0'
-cookbook 'mercurial', '~> 1.1.4'
+# cookbook 'apt', '~> 1.10.0'
+# cookbook 'mercurial', '~> 2.0.2'
 
 cookbook 'users'
 cookbook 'oh-my-zsh'

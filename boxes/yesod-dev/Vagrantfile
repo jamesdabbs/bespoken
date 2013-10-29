@@ -1,8 +1,0 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
-require "~/chef/box"
-Box.new "yesod-dev",
-  recipes: %w{ jdabbs jdabbs::yesod },
-  json:      {}
-

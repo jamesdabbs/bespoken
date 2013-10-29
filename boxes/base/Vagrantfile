@@ -1,6 +1,0 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
-require "~/chef/box"
-Box.new "base", recipes: "jdabbs"
-

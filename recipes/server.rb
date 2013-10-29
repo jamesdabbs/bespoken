@@ -5,15 +5,9 @@
 # sure the router is set up to forward ports appropriately).
 #
 # CREATE THE MEDIA AND STORAGE DIRECTORIES
-# In the current iteration, /home is mounted on a different partition and /data is
-# symlinked into there; /storage is symlinked to an external drive.
-MEDIA   = "/data"
-STORAGE = "/storage"
-
-STORAGE_UUID = {
-  toshiba_3tb: "6ED2E7F9D2E7C405",
-}.fetch :toshiba_3tb
-
+# In the current iteration, /home is mounted on a different partition and $MEDIA is
+# symlinked into there; $STORAGE is symlinked to an external drive.
+#
 # GET CHEF RUNNING
 # Again, duh. But since you do this infrequently enough, remember to make sure the
 # chef gem is up to date, upload all the cookbooks (`berks upload`) and data bags
@@ -32,6 +26,18 @@ STORAGE_UUID = {
 # Optional, but the transmission watch dir is disabled by default so that it doesn't
 # download the whole internets the first time that flexget runs. You probably want to
 # manually run flexget once and then add `flexget_checked` to the node's attributes.
+#
+# DOWNLOAD SCRIPTS
+# Again, optional, but there are several useful manual scripts in a private Bitbucket
+# repo that is intended to live at ~/scripts
+
+MEDIA   = "/data"
+STORAGE = "/storage"
+
+STORAGE_UUID = {
+  toshiba_3tb: "6ED2E7F9D2E7C405",
+}.fetch :toshiba_3tb
+
 
 include_recipe "jdabbs::default"
 u = user "james"
@@ -42,7 +48,9 @@ u = user "james"
 include_recipe "users"
 users_manage "media"
 
-if node["server"]["create_dirs"]
+if node["server"]["vm"]
+  # We're building test vms. Go ahead and create the base dirs and
+  # make sure apt is up to date
   [MEDIA, STORAGE].each do |dir|
     directory dir do
       group "media"
@@ -50,14 +58,20 @@ if node["server"]["create_dirs"]
       recursive true
     end
   end
+
+  execute 'sudo apt-get update -y'
+
+else
+  # This is a live environment. Directories and updates should be
+  # managed manually (for now)
+
+  # This is largely intended to be sure that STORAGE exists
+  directory "#{STORAGE}/mirrors" do
+    user  "mirror"
+    group "media"
+  end
 end
 
-# This is largely intended to be sure that STORAGE exists
-directory "#{STORAGE}/mirrors" do
-  user  "mirror"
-  group "media"
-  mode  0755
-end
 
 {
   "music"     => "james",
@@ -67,21 +81,27 @@ end
   directory "#{MEDIA}/#{name}" do
     user  owner
     group "media"
-    mode  0755
-  end
-  directory "#{STORAGE}/mirrors/server/#{name}" do
-    user  "mirror"
-    group "media"
-    mode  0755
-    recursive true
   end
 end
 
-# TODO: skip this when possible
-execute 'sudo apt-get update -y'
 
-# TODO: the remainder should probably be extracted to a role since it's
-#       just setting attributes and running recipes.
+# TODO: the sections that recipe + node config should probably be
+#       extracted to a role.
+
+# -- Mirrors -- #
+# TODO:
+# - Add recipe and sync script using rsync
+# - Set up cron job
+# - Make sure mail goes to the right user
+defaults "mirror",
+  "to"          => "#{STORAGE}/mirrors/server",
+  "directories" => %w{ music podcasts downloads }.map { |dir| "#{MEDIA}/#{dir}" },
+  "mailto"      => "james"
+include_recipe "jdabbs::mirror"
+
+# -- Mail -- #
+# TODO: send externally?
+package "mailutils"
 
 # -- Samba shares (from data bag) -- #
 # TODO:
@@ -95,7 +115,9 @@ defaults "samba",
 include_recipe "samba::server"
 
 # -- SSH -- #
-# TODO: Customize motd
+# TODO:
+# - Customize motd
+# - Add mail line in remote user's .ssh/rc
 defaults "openssh", "server",
   "permit_root_login"       => "no",
   "password_authentication" => "no",
@@ -119,23 +141,26 @@ defaults "flexget",
   "feeds" => u.feeds
 include_recipe "jdabbs::flexget"
 
-# -- Data flow -- #
-# TODO: script to sync downloads, music, podcasts -> storage
-# TODO: tagging tools
-# TODO: music import and pull scripts
-# TODO: start transmission on boot
 
-# -- Mail -- #
-# TODO: set up on remote logins, mirror / flexget failures
-package "mailutils"
+# TODO:
+
+# -- Data flow -- #
+# Add to scripts repo:
+# - tag (beet import)
+# - store (taggart)
+# - sync_music
+# Make scripts use env variables, added in .zshrc.local
+# Split .zshrc.user & .zshrc.local
+# Advanced: generate a per-box ssh key and automatically register w/ Bitbucket
 
 # -- File server -- #
-# TODO: make a simple app (flask? we've already got python ...) to
+# make a simple app (flask? we've already got python ...) to
 # - allow browsing and file serving over HTTP/:80
 # - run as a read-only user
 # - basic auth from data bag
 # - filter downloads dir
 
 # -- Plex / roku -- #
-# TODO: everything
+# use plexapp cookbook
+# configure ...
 
