@@ -42,8 +42,17 @@ u = user "james"
 include_recipe "users"
 users_manage "media"
 
+if node["server"]["create_dirs"]
+  [MEDIA, STORAGE].each do |dir|
+    directory dir do
+      group "media"
+      mode   0775
+      recursive true
+    end
+  end
+end
+
 # This is largely intended to be sure that STORAGE exists
-# FIXME: allow node json option to create these (e.g. for Vagrant testing)
 directory "#{STORAGE}/mirrors" do
   user  "mirror"
   group "media"
@@ -68,18 +77,16 @@ end
   end
 end
 
+# TODO: skip this when possible
 execute 'sudo apt-get update -y'
 
 # TODO: the remainder should probably be extracted to a role since it's
 #       just setting attributes and running recipes.
 
 # -- Samba shares (from data bag) -- #
-# FIXME:
-# - network settings
-# - static IP
+# TODO:
 # - security share?
-# - figure out user permissions and writability
-# fstab for storage
+# - figure out user permissions and writability (may need mount / fstab)
 defaults "samba",
   "workgroup"   => "WORKGROUP",
   "security"    => "share",
