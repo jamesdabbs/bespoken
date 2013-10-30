@@ -10,6 +10,10 @@ but should look something like:
 ```
 {
   "id":         "james" ,
+  "bitbucket_repos": {
+    <git uri>: <clone path>,
+    ...
+  }
   "password":   <password hashed with `openssl passwd`>, # See: https://github.com/opscode-cookbooks/users.
   "shell":      "\/bin\/zsh" ,
   "groups":    ["sudo", ...], # Needed both for sudo access, and for the default recipe to create this user

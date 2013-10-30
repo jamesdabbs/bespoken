@@ -84,6 +84,8 @@ end
   end
 end
 
+package "mailutils"
+
 template "/home/remote/.ssh/rc" do
   source "remote-ssh.rc"
   mode   0640
@@ -98,10 +100,6 @@ defaults "mirror",
   "directories" => %w{ music podcasts downloads }.map { |dir| "#{MEDIA}/#{dir}" },
   "mailto"      => "james"
 include_recipe "jdabbs::mirror"
-
-# -- Mail -- #
-# TODO: send externally?
-package "mailutils"
 
 # -- Samba shares (from data bag) -- #
 # TODO:
@@ -138,8 +136,17 @@ defaults "flexget",
   "feeds" => u.feeds
 include_recipe "jdabbs::flexget"
 
+# -- BitBucket -- #
+defaults "bitbucket",
+  "user"      => "james",
+  "key_label" => "james@server",
+  "repos"     => u.bitbucket_repos
+include_recipe "jdabbs::bitbucket"
+
 
 # TODO:
+
+# Forward mail james -> gmail
 
 # -- Data flow -- #
 # Add to scripts repo:
