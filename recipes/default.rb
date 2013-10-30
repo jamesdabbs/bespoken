@@ -22,6 +22,8 @@ include_recipe "oh-my-zsh"
   end
 end
 
+execute "sudo apt-get update -y"
+package "mailutils"
 package "tree"
 
 include_recipe "jdabbs::tmux"

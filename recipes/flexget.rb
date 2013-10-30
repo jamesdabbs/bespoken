@@ -1,9 +1,13 @@
 # Adapted from: https://github.com/chef-developers/chef-flexget
 
 flexget = node["flexget"]
-feeds   = flexget["feeds"]
 u       = flexget["user"]
 home    = "/home/#{u}"
+
+dbu     = data_bag_item "users", u
+dbfeeds = dbu["feeds"] || {}
+
+feeds = flexget["feeds"].merge dbfeeds
 
 
 include_recipe "python"
@@ -26,18 +30,19 @@ feeds.each do |name, conf|
   end
 end
 
-# Yuck. See: http://stackoverflow.com/questions/14738364
-class Chef::Node::ImmutableMash
-  def to_h
+def hashify obj
+  if obj.respond_to? :to_hash
     h = {}
-    each do |k,v|
-      h[k] = v.respond_to?(:to_h) ? v.to_h : v
+    obj.to_hash.each do |k,v|
+      h[k] = hashify v
     end
     h
+  else
+    obj
   end
 end
 
-tasks = { "tasks" => feeds.to_h }
+tasks = { "tasks" => hashify(feeds) }
 file "#{home}/.flexget/config.yml" do
   owner   u
   group   u

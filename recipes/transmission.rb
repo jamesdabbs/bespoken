@@ -1,3 +1,6 @@
+transmission = node["transmission"]
+
+
 %w{ transmission transmission-cli transmission-daemon }.each do |pkg|
   package(pkg) { action :install }
 end
@@ -19,20 +22,20 @@ service "transmission" do
 end
 
 directory "/var/lib/transmission" do
-  owner node["transmission"]["user"]
+  owner transmission["user"]
 end
 
-settings = node["transmission"]["settings"]
+settings = transmission["settings"]
 settings.each do |k, dir|
   if k.to_s =~ /_dir$/ && settings["#{k}_enabled"]
     directory dir do
-      owner node["transmission"]["user"]
+      owner transmission["user"]
     end
   end
 end
 
-file "#{node['transmission']['config_dir']}/settings.json" do
-  content JSON.pretty_generate node["transmission"]["settings"]
+file "#{transmission['config_dir']}/settings.json" do
+  content JSON.pretty_generate transmission["settings"]
   notifies :reload, "service[transmission]", :immediate
 end
 

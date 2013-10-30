@@ -31,127 +31,30 @@
 # Again, optional, but there are several useful manual scripts in a private Bitbucket
 # repo that is intended to live at ~/scripts
 
-MEDIA   = "/data"
-STORAGE = "/storage"
-
 STORAGE_UUID = {
   toshiba_3tb: "6ED2E7F9D2E7C405",
 }.fetch :toshiba_3tb
-
-
-include_recipe "jdabbs::default"
-u = user "james"
-
 
 # -- User and directory setup -- #
 
 include_recipe "users"
 users_manage "media"
 
-if node["server"]["vm"]
-  # We're building test vms. Go ahead and create the base dirs and
-  # make sure apt is up to date
-  [MEDIA, STORAGE].each do |dir|
-    directory dir do
-      group "media"
-      mode   0775
-      recursive true
-    end
-  end
-
-  execute 'sudo apt-get update -y'
-
-else
-  # This is a live environment. Directories and updates should be
-  # managed manually (for now)
-
-  # This is largely intended to be sure that STORAGE exists
-  directory "#{STORAGE}/mirrors" do
-    user  "mirror"
-    group "media"
-  end
-end
-
-
-{
-  "music"     => "james",
-  "podcasts"  => "james",
-  "downloads" => "transmission",
-}.each do |name, owner|
-  directory "#{MEDIA}/#{name}" do
-    user  owner
-    group "media"
-  end
-end
-
-package "mailutils"
-
 template "/home/remote/.ssh/rc" do
   source "remote-ssh.rc"
   mode   0640
 end
 
-# TODO: the sections that recipe + node config should probably be
-#       extracted to a role.
-
-# -- Mirrors -- #
-defaults "mirror",
-  "to"          => "#{STORAGE}/mirrors/server",
-  "directories" => %w{ music podcasts downloads }.map { |dir| "#{MEDIA}/#{dir}" },
-  "mailto"      => "james"
-include_recipe "jdabbs::mirror"
-
-# -- Samba shares (from data bag) -- #
 # TODO:
+
+# -- Samba -- #
 # - security share?
 # - figure out user permissions and writability (may need mount / fstab)
-defaults "samba",
-  "workgroup"   => "WORKGROUP",
-  "security"    => "share",
-  "interfaces"  => "lo wlan0",
-  "hosts allow" => "10.0.0.0/8"
-include_recipe "samba::server"
-
-# -- SSH -- #
-defaults "openssh", "server",
-  "permit_root_login"       => "no",
-  "password_authentication" => "no",
-  "allow_users"             => "james@10.0.0.* remote vagrant"
-include_recipe "openssh"
-
-# -- Transmission -- #
-defaults "transmission", "settings",
-  "download-dir"           => "#{MEDIA}/downloads",
-  "incomplete-dir-enabled" => true,
-  "watch-dir"              => "#{MEDIA}/downloads/.watch",
-  "watch-dir-enabled"      => node[:flexget_checked]||false,
-  "rpc-username"           => "james",
-  "rpc-password"           => u.transmission_password,
-  "rpc-whitelist"          => "127.0.0.1,10.0.*.*"
-include_recipe "jdabbs::transmission"
-
-# -- Flexget -- #
-defaults "flexget",
-  "user"  => "james",
-  "feeds" => u.feeds
-include_recipe "jdabbs::flexget"
-
-# -- BitBucket -- #
-defaults "bitbucket",
-  "user"      => "james",
-  "key_label" => "james@server",
-  "repos"     => u.bitbucket_repos
-include_recipe "jdabbs::bitbucket"
-
-
-# TODO:
-
 # Forward mail james -> gmail
 
 # -- Data flow -- #
 # Add to scripts repo:
 # - tag (beet import)
-# - store (taggart)
 # - sync_music
 # Make scripts use env variables, added in .zshrc.local
 # Split .zshrc.user & .zshrc.local

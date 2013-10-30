@@ -1,6 +1,9 @@
 # Creates an ssh key and registers it with BitBucket
 # Adapted from: http://clarkdave.net/2013/02/send-deploy-keys-to-bitbucket-in-a-chef-recipe/
-u = user "james"
+bitbucket = node["bitbucket"]
+
+
+u = data_bag_item "users", bitbucket["user"]
 
 chef_gem 'httparty' do
   version '0.11.0' # Getting multijson conflicts otherwise
@@ -28,12 +31,12 @@ ruby_block "add_ssh_key_to_bitbucket" do
     url      = "https://api.bitbucket.org/1.0/users/jamesdabbs/ssh-keys"
     response = HTTParty.post(url, {
       basic_auth: {
-        username: u.bitbucket_user,
-        password: u.bitbucket_pass
+        username: u["bitbucket_username"],
+        password: u["bitbucket_password"]
       },
       body: {
-        accountname: "jamesdabbs",
-        label:       node["bitbucket"]["key_label"],
+        accountname: u["bitbucket_username"],
+        label:       bitbucket["key_label"],
         key:         File.read('/home/james/.ssh/id_rsa.pub')
       }
     })
@@ -46,13 +49,13 @@ ruby_block "add_ssh_key_to_bitbucket" do
   end
 end
 
-node["bitbucket"]["repos"].each do |repo, path|
+u["bitbucket_repos"].each do |repo, path|
   git repo do
     repository  repo
     destination path
     action      :nothing
     subscribes  :checkout, "ruby_block[add_ssh_key_to_bitbucket]"
-    user        node["bitbucket"]["user"]
+    user        bitbucket["user"]
   end
 end
 

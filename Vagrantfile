@@ -17,6 +17,7 @@ Vagrant.configure "2" do |config|
       config.vm.provision :chef_solo do |chef|
         chef.cookbooks_path = "."
         chef.data_bags_path = "data_bags"
+        chef.roles_path     = "roles"
 
         chef.add_recipe "chef-solo-search"
         chef.add_recipe "jdabbs::default"
@@ -31,12 +32,7 @@ Vagrant.configure "2" do |config|
   box :base, 10
 
   box :server, 11 do |vm, chef|
-    chef.add_recipe "jdabbs::server"
-    chef.json = {
-      "server" => {
-        "vm" => true
-      }
-    }
+    chef.add_role "server"
   end
 
   box :medlink, 12 do |vm, chef|

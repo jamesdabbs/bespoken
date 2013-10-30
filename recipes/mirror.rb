@@ -6,6 +6,14 @@ directory mirror["to"] do
   recursive true
 end
 
+# Make sure the mirrored directories exist
+mirror["directories"].each do |dir, usr|
+  directory "#{mirror['from']}/#{dir}" do
+    owner usr
+    group "media"
+  end
+end
+
 template "/usr/local/bin/mirror" do
   source "mirror.py.erb"
   owner  "mirror"
