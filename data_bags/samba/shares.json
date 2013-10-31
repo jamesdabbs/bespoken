@@ -2,44 +2,34 @@
   "id":     "shares",
   "shares": {
     "Downloads": {
-      "comment":       "Downloads",
-      "path":          "/data/downloads",
-      "guest ok":      "yes",
-      "guest account": "remote",
-      "browseable":    "yes",
-      "write list":    ["james"]
+      "path":       "/data/downloads",
+      "guest ok":   "yes",
+      "browseable": "yes",
+      "write list": ["james"]
     },
     "Music": {
-      "comment":       "Music",
-      "path":          "/data/music",
-      "guest ok":      "yes",
-      "guest account": "remote",
-      "browseable":    "yes",
-      "write list":    ["james"]
+      "path":       "/data/music",
+      "guest ok":   "yes",
+      "browseable": "yes",
+      "write list": ["james"]
     },
     "Movies": {
-      "comment":       "Movies",
-      "path":          "/storage/Movies",
-      "guest ok":      "yes",
-      "guest account": "remote",
-      "browseable":    "yes",
-      "write list":    ["james"]
+      "path":       "/storage/Movies",
+      "guest ok":   "yes",
+      "browseable": "yes",
+      "write list": ["james"]
     },
     "TV": {
-      "comment":       "TV",
-      "path":          "/storage/TV",
-      "guest ok":      "yes",
-      "guest account": "remote",
-      "browseable":    "yes",
-      "write list":    ["james"]
+      "path":       "/storage/TV",
+      "guest ok":   "yes",
+      "browseable": "yes",
+      "write list": ["james"]
     },
     "Storage": {
-      "comment":       "All Storage",
-      "path":          "/storage",
-      "guest ok":      "yes",
-      "guest account": "remote",
-      "browseable":    "yes",
-      "write list":    ["james"]
+      "path":       "/storage",
+      "guest ok":   "yes",
+      "browseable": "yes",
+      "write list": ["james"]
     }
   }
 }

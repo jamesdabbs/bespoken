@@ -4,9 +4,7 @@ import json
 from subprocess import call
 
 dirs = json.loads('<%= node["mirror"]["directories"].to_json %>')
-_to  = "<%= node['mirror']['to'] %>"
-
 for _from in dirs.keys():
   full_from = "<%= node['mirror']['from'] %>/" + _from
-  call(["rsync", "-avzO", "--no-perms", full_from, _to])
+  call(["rsync", "-avz", "--delete", full_from, "<%= node['mirror']['to'] %>"])
 

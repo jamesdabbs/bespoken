@@ -13,20 +13,8 @@
 #     UUID=6ED2E7F9D2E7C405 /media/wind ntfs-3g defaults,windows_names,locale=en_US.utf8,uid=1001,gid=1001  0 0
 #
 #
-# GET CHEF RUNNING
-# Again, duh. But since you do this infrequently enough, remember to make sure the
-# chef gem is up to date, purge the old jdabbs cookbook (\knife cookbook delete jdabbs)
-# upload all the cookbooks (`berks upload`) and data bags and roles
-# (`\knife (data bag / role) from file <bag> <item>`) and do something like
-#
-#    \knife bootstrap <address> --ssh-user ... \
-#        --run-list "role[jdabbs::server]" --sudo
-#
-# The \knife signifies to use the local knife version, since system knife may be old
-# (likely the problem if you see missing constant errors in weird places).
-#
-# You'll need to already have ssh running on the target box (`apt-get openssh-server`),
-# but this will overwrite the existing settings.
+# BOOTSTRAP THE NODE
+# This is now documented in the `deploy` script
 #
 # CHECK ON THE WATCH DIR
 # Optional, but the transmission watch dir is disabled by default so that it doesn't
@@ -45,6 +33,7 @@ run_list    %w{
   openssh
   jdabbs::transmission
   jdabbs::flexget
+  jdabbs::beets
   jdabbs::bitbucket
 }
 default_attributes({
@@ -66,10 +55,11 @@ default_attributes({
     }
   },
   "samba" => {
-    "workgroup"   => "WORKGROUP",
-    "security"    => "share",
-    "interfaces"  => "lo wlan0",
-    "hosts_allow" => "10.0.0.0/8"
+    "workgroup"     => "WORKGROUP",
+    "security"      => "share",
+    "interfaces"    => "lo wlan0",
+    "hosts_allow"   => "10.0.0.0/8",
+    "guest_account" => "remote"
   },
   "openssh" => {
     "server" => {
@@ -109,6 +99,9 @@ default_attributes({
           "rss" => "http://feeds.thisamericanlife.org/talpodcast"
       }
     }
+  },
+  "beets" => {
+    "directory" => "#{MEDIA}/music"
   },
   "bitbucket" => {
     "user"      => "james",
