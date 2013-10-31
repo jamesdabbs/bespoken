@@ -33,6 +33,14 @@ Vagrant.configure "2" do |config|
 
   box :server, 11 do |vm, chef|
     chef.add_role "server"
+    chef.json = {
+      "mirror" => {
+        "create_dirs" => true
+      },
+      "bitbucket" => {
+        "key_label" => "james@server.vm"
+      }
+    }
   end
 
   box :medlink, 12 do |vm, chef|

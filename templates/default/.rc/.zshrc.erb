@@ -1,0 +1,18 @@
+export ZSH=$HOME/.oh-my-zsh
+export ZSH_THEME="<%= node["jdabbs"]["zsh_theme"] %>"
+
+plugins=(extract git rsync <%= node["jdabbs"]["zsh_plugins"].join(" ") %>)
+source $ZSH/oh-my-zsh.sh
+
+export PATH=<%= node["jdabbs"]["path"].join(":") %>:/usr/local/bin:/usr/local/sbin:$PATH
+
+export EDITOR=vim
+export OPT=0
+export WARN_ERRORS=-Werror
+<%- node["jdabbs"]["env"].each do |k,v| %>
+export <%= k %>=<%= v %>
+<%- end %>
+
+source $HOME/.zsh_aliases
+source $HOME/.zshrc.local
+

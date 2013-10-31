@@ -1,0 +1,7 @@
+{
+  "id":       "remote",
+  "groups":   ["remote"],
+  "shell":    "\/bin\/bash",
+  "ssh_keys": []
+}
+

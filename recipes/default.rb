@@ -1,7 +1,25 @@
-u = user "james"
+# Basic setup for all of my chef-managed boxes
+
+# For OSX compatibility
+link "/home" do
+  to     "/Users"
+  not_if { ::Dir.exists? "/home" }
+end
+
 
 include_recipe "users"
-users_manage "sudo" # Creates from users/ data bag all users in the sudo group
+
+groups = ["sudo", "remote"] + node["jdabbs"]["groups"]
+groups.each { |g| users_manage g }
+
+directory "/home/remote/.ssh" do
+  owner "remote"
+  group "remote"
+end
+template "/home/remote/.ssh/rc" do
+  source  "remote-ssh.rc"
+end
+
 
 # Set the timezone
 tz = "US/Eastern"
@@ -10,15 +28,34 @@ execute "set timezone" do
   not_if { File.read("/etc/timezone") =~ /#{tz}/ }
 end
 
+# TODO: set theme and plugins
 include_recipe "oh-my-zsh"
 
+template "/home/james/.zshrc" do
+  source ".rc/.zshrc.erb"
+  owner  "james"
+  group  "james"
+end
+
+file "/home/james/.zshrc.local" do
+  content "# Make any local rc changes here"
+  owner   "james"
+  group   "james"
+  action  :create_if_missing
+end
+
+template "/home/james/.oh-my-zsh/themes/jdabbs.zsh-theme" do
+  source ".rc/jdabbs.zsh-theme"
+  owner  "james"
+  group  "james"
+end
+
 %w{ .ackrc .gemrc .gitconfig .gitignore_global .rspec .tmux.conf .vimrc
-    .zsh_aliases .zshrc .zshrc.local jdabbs.zsh-theme }.each do |f|
-  template "#{u.home}/#{f}" do
+    .zsh_aliases }.each do |f|
+  template "/home/james/#{f}" do
     source ".rc/#{f}"
-    owner  u.name
-    group  u.name
-    mode   0644
+    owner  "james"
+    group  "james"
   end
 end
 

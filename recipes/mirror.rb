@@ -1,16 +1,18 @@
 mirror = node["mirror"]
 
-directory mirror["to"] do
-  owner "mirror"
-  group "mirror"
-  recursive true
-end
+if mirror["create_dirs"]
+  directory mirror["to"] do
+    owner "mirror"
+    group "mirror"
+    recursive true
+  end
 
-# Make sure the mirrored directories exist
-mirror["directories"].each do |dir, usr|
-  directory "#{mirror['from']}/#{dir}" do
-    owner usr
-    group "media"
+  mirror["directories"].each do |dir, usr|
+    directory "#{mirror['from']}/#{dir}" do
+      owner usr
+      group "media"
+      recursive true
+    end
   end
 end
 

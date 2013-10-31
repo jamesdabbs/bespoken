@@ -3,7 +3,7 @@
   "shares": {
     "Downloads": {
       "comment":       "Downloads",
-      "path":          "/media/downloads",
+      "path":          "/data/downloads",
       "guest ok":      "yes",
       "guest account": "remote",
       "browseable":    "yes",
@@ -11,7 +11,7 @@
     },
     "Music": {
       "comment":       "Music",
-      "path":          "/media/music",
+      "path":          "/data/music",
       "guest ok":      "yes",
       "guest account": "remote",
       "browseable":    "yes",

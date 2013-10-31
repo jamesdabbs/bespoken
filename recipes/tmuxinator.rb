@@ -16,8 +16,8 @@ node.set["rbenv"]["user_installs"] = [
   }
 ]
 
-# Ruby build was failing to find an appropriate libxml2-dev without this
-execute "sudo apt-get update -y"
+node.default["jdabbs"]["path"] = %{ $HOME/.rbenv/shims $HOME/.rbenv/bin } + node.default["jdabbs"]["path"]
+node.default["jdabbs"]["zsh_plugins"] << "bundler"
 
 include_recipe "ruby_build"
 include_recipe "rbenv::user"

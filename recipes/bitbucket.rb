@@ -4,6 +4,7 @@ bitbucket = node["bitbucket"]
 
 
 u = data_bag_item "users", bitbucket["user"]
+return unless u["bitbucket_password"]
 
 chef_gem 'httparty' do
   version '0.11.0' # Getting multijson conflicts otherwise
@@ -49,7 +50,8 @@ ruby_block "add_ssh_key_to_bitbucket" do
   end
 end
 
-u["bitbucket_repos"].each do |repo, path|
+repos = u["bitbucket_repos"] || {}
+repos.each do |repo, path|
   git repo do
     repository  repo
     destination path

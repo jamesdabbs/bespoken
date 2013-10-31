@@ -9,3 +9,11 @@
   "feeds" => {}
 }.each { |k,v| node.default["flexget"][k] = v }
 
+{
+  "env"         => {},
+  "path"        => [],
+  "groups"      => [],
+  "zsh_theme"   => "jdabbs",
+  "zsh_plugins" => []
+}.each { |k,v| node.default["jdabbs"][k] = v }
+
