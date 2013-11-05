@@ -56,6 +56,7 @@ nnoremap <leader><leader> <c-^>
 
 map <leader>R :so $MYVIMRC<cr>
 map <leader>b :NERDTreeToggle<cr>
+map <leader>v :ccl<cr>
 
 " Slightly faster paging
 nnoremap <c-e> 5<c-e>
