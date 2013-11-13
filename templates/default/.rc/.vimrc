@@ -4,6 +4,10 @@ call pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" Use 7.4 hybrid numbering
+set relativenumber
+set number
+
 " Keep temp files in a central location
 set backupdir=~/.vim/tmp,/var/tmp,/tmp
 set directory=~/.vim/tmp,/var/tmp,/tmp
