@@ -4,6 +4,10 @@ call pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" Use 7.4 hybrid numbering
+set relativenumber
+set number
+
 " Keep temp files in a central location
 set backupdir=~/.vim/tmp,/var/tmp,/tmp
 set directory=~/.vim/tmp,/var/tmp,/tmp
@@ -56,6 +60,7 @@ nnoremap <leader><leader> <c-^>
 
 map <leader>R :so $MYVIMRC<cr>
 map <leader>b :NERDTreeToggle<cr>
+map <leader>v :ccl<cr>
 
 " Slightly faster paging
 nnoremap <c-e> 5<c-e>
