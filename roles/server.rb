@@ -19,7 +19,8 @@
 # CHECK ON THE WATCH DIR
 # Optional, but the transmission watch dir is disabled by default so that it doesn't
 # download the whole internets the first time that flexget runs. You probably want to
-# manually run flexget once and then add `flexget_checked` to the node's attributes.
+# manually run flexget once and then manually enable the watch dir. Note that transmission
+# must be off when you do, since it writes over the config file when it shuts down.
 
 MEDIA   = "/data"
 STORAGE = "/storage"
