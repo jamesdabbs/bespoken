@@ -43,6 +43,9 @@ default_attributes({
     "env" => {
       "MEDIA_DIR"   => MEDIA,
       "STORAGE_DIR" => STORAGE
+    },
+    "ssh" => {
+      "allow_users" => "james@10.0.0.* remote vagrant"
     }
   },
   "mirror" => {

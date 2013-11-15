@@ -1,19 +1,27 @@
-{
+def defaults *path, attrs
+  d = path.reduce(node.default) { |d,p| d[p] }
+  attrs.each { |k,v| d[k] = v }
+end
+
+defaults "transmission",
   "user"       => "transmission",
   "config_dir" => "/var/lib/transmission",
   "settings"   => {}
-}.each { |k,v| node.default["transmission"][k] = v }
 
-{
+defaults "flexget",
   "user"  => "james",
   "feeds" => {}
-}.each { |k,v| node.default["flexget"][k] = v }
 
-{
+defaults "jdabbs",
   "env"         => {},
   "path"        => [],
   "groups"      => [],
   "zsh_theme"   => "jdabbs",
   "zsh_plugins" => []
-}.each { |k,v| node.default["jdabbs"][k] = v }
+
+defaults "jdabbs", "ssh",
+  "allow_users" => "james vagrant"
+
+defaults "jdabbs", "rbenv",
+  "rubies" => []
 

@@ -1,0 +1,14 @@
+{
+    "groups": [
+        "sudo",
+        "rbenv"
+    ],
+    "id": "james",
+    "password": "$1$TaAp5okb$WGyGQmGO5sh9WiVGOOvpQ/",
+    "shell": "/bin/zsh",
+    "smbpassword": "password",
+    "ssh_keys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwhKTPg2vVoqv4XGvedoW56YFgisqHPmIV1ncME5puImOfQAWQmJmCBDZEZor6Y6ZlVk8p8X+U0oesxG71SXwst6VCAX9Ee8fjP10vz0hyQGs/+LbWWX+PiDlArrMKBf/EyxOi1W4CScCp1eiqYixx1Su9uGrahF0BbmXroG85IaeCXBf1r1oEozXLG9ERoGax9MfHnjoc3o77wOSlmtu49XGnIWsyrxskamiqnWi9QvxTZbBRNcBElnR64+yAyhZPEKV2xBxXt+GBQCcUYfWpvp1jPEThMEwji3zhfyjwjRNEIwn8knXAw38WzDrLGt8SZZIgLVJ0niF1rTQq1Y3h james@home",
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjNWvuJOSGa5MhziX9mUCZ2MIEs/ZuApt9NwgJU+MB7dOpawxoFgc9rvFVzd1we72mZ5N+lHvckCrVvPO0JrnL26DgCbzdAjH7AVqPVWHkcrZuOt8Fat53IlR7io+bTzEYmAb/aq/MLA6cCVwSw/ooRtJ3z4c7MVdUSjLjwdNpd6UVswrOmQPKOixVu5gJPNd8tJ42WAj1Bu1Ir78FBqEvlhRcRaKc0JIi0oT9dfoggPg6RSEolm+S4JTN0CyMA4AFqBz2HnYrwAxJUPy9e/7pGV5mN/8m99buCRxEydJa283rAYO+LJ277zX+P/DsFsSLQ1GEhCwKasTP91javaQf jdabbs@emcien.com"
+    ]
+}

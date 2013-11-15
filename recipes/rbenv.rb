@@ -1,18 +1,14 @@
-u = user "james"
+rbenv = node["jdabbs"]["rbenv"]
 
-edge = "2.0.0-p247"
+rubies = rbenv["rubies"]
+global = rubies.first
 
 node.set["rbenv"]["user_installs"] = [
   {
-    "user"   => u.name,
-    "rubies" => [edge],
-    "global" => edge,
-    "gems"   => {
-      edge => [
-        { "name" => "bundler"    },
-        { "name" => "tmuxinator" }
-      ]
-    }
+    "user"   => "james",
+    "rubies" => rubies,
+    "global" => global,
+    "gems"   => Hash[ rubies.map { |r| [r, { "name" => "bundler" } ] } ]
   }
 ]
 

@@ -43,19 +43,14 @@ Vagrant.configure "2" do |config|
     }
   end
 
-  box :medlink, 12 do |vm, chef|
+  box :dev, 12 do |vm, chef|
+    chef.add_role "dev"
     chef.json = {
-      projects: {
-        medlink: {
-          user:       "james",
-          repository: "git://github.com/atlrug-rhok/medlink.git"
-        }
+      "bitbucket" => {
+         "key_label" => "james@dev.vm"
       }
     }
   end
 
-  box :yesod_dev, 13 do |vm, chef|
-    chef.add_recipe "jdabbs::yesod"
-  end
 end
 
